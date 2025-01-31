@@ -115,4 +115,6 @@ if (Math.random() <= 1) {
 
 `/api/customers/{id}/purchases`는 `제품 가격` 대신 `총 구매 가격`을 반환하므로 별도로 계산이 필요했습니다.
 
+`radix-ui`와 `@emotion/styled`를 사용해 기능과 CSS를 분리하는 식으로 생산성을 높였습니다.
+
 > (백엔드 수정) 요구사항에는 `/api/customer/{id}/purchases`로 되어 있지만 `/api/customers/{id}/purchases`가 올바른 접근 경로입니다.
