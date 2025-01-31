@@ -1,6 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import { QUERY_KEYS } from "./queryKeys";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"
+
+dayjs.extend(utc);
 
 type Request = {
     from: string;
@@ -17,15 +21,12 @@ export const usePurchaseFrequency = ({ from, to }: Request) => {
         queryKey: QUERY_KEYS["purchase frequency"].list(from, to).queryKey,
         queryFn: async ({ queryKey }) => {
             const range = queryKey[3];
-            const params = new URLSearchParams(range);
+            const params = new URLSearchParams({
+                ...(range.from && { from: dayjs.utc(range.from).startOf('day').toISOString() }),
+                ...(range.to && { to: dayjs.utc(range.to).endOf('day').toISOString() }),
+            });
 
             return await axios.get<Response>(`api/purchase-frequency`, { params })
-                .catch((error) => {
-                    if (isAxiosError(error) && error.status === 404) {
-                        return { data: [] };
-                    }
-                    throw error;
-                })
                 .then(({ data }) => data)
         },
     })
