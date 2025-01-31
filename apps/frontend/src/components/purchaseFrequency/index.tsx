@@ -5,6 +5,8 @@ import { Chart, SuspenseFallback } from "./components";
 import { ErrorFallback } from "@components/Customers/components";
 import dayjs from "dayjs";
 
+// from-to가 7월 안에서 유효한지 검증
+// 유효한 경우에만 from, to를 갱신함
 const isValid = (from: string, to: string): boolean => {
     return Boolean(from) 
         && Boolean(to) 

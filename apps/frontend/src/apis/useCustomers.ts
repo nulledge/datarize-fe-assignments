@@ -1,6 +1,5 @@
 import { Sort } from "@interfaces/sort";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Customer } from "@interfaces/customer";
 import axios, { isAxiosError } from "axios";
 import { QUERY_KEYS } from "./queryKeys";
 
@@ -9,7 +8,9 @@ type Request = {
     sortBy: Sort;
 };
 
-type Response = Array<Customer & {
+type Response = Array<{
+    id: number;
+    name: string;
     count: number;
     totalAmount: number;
 }>;
@@ -23,6 +24,7 @@ export const useCustomers = ({ name, sortBy}: Request) => {
             
             return await axios.get<Response>(`api/customers`, { params })
                 .catch((error) => {
+                    // 결과값 없음이 404 오류로 반환돼서 내부적으로 처리
                     if (isAxiosError(error) && error.status === 404) {
                         return { data: [] };
                     }

@@ -6,6 +6,7 @@ import { queryClient } from '@apis/queryClient.ts'
 
 import axios from "axios";
 
+// axios 기본 URL 설정
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
