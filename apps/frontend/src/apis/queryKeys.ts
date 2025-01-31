@@ -1,3 +1,4 @@
+import { Sort } from "@interfaces/sort";
 import { createQueryKeys, mergeQueryKeys } from "@lukemorales/query-key-factory";
 
 const purchaseFrequency = createQueryKeys('purchase frequency', {
@@ -5,7 +6,7 @@ const purchaseFrequency = createQueryKeys('purchase frequency', {
 });
 
 const customer = createQueryKeys('customer', {
-    'list': ['list'],
+    'list': (name: string, sortBy: Sort) => ['list', { name, sortBy }],
     'purchases': (id: number) => ['detail', id, 'purchases'],
 });
 

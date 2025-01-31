@@ -2,10 +2,11 @@ import { Sort } from "@interfaces/sort";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Customer } from "@interfaces/customer";
 import axios, { isAxiosError } from "axios";
+import { QUERY_KEYS } from "./queryKeys";
 
 type Request = {
-    sortBy: Sort;
     name: string;
+    sortBy: Sort;
 };
 
 type Response = Array<Customer & {
@@ -13,11 +14,13 @@ type Response = Array<Customer & {
     totalAmount: number;
 }>;
 
-export const useCustomers = (request: Request) => {
+export const useCustomers = ({ name, sortBy}: Request) => {
     return useSuspenseQuery({
-        queryKey: ['customer', 'list', request],
+        queryKey: QUERY_KEYS.customer.list(name, sortBy).queryKey,
         queryFn: async ({ queryKey }) => {
-            const params = new URLSearchParams(queryKey.at(-1));
+            const search = queryKey[3];
+            const params = new URLSearchParams(search);
+            
             return await axios.get<Response>(`api/customers`, { params })
                 .catch((error) => {
                     if (isAxiosError(error) && error.status === 404) {
