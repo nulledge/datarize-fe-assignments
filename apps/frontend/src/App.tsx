@@ -1,5 +1,5 @@
 import { Customers } from '@components/Customers'
-import { PurchaseFrequency } from '@components/purchaseFrequency'
+import { PurchaseFrequency } from '@components/PurchaseFrequency'
 
 function App() {
 
