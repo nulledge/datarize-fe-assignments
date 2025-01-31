@@ -9,7 +9,7 @@ export const Purchases: FunctionComponent<Props> = ({ id }) => {
     const { data } = useCustomerPurchases({ id });
 
     return (
-        <table>
+        <table width="100%">
             <thead>
                 <tr>
                     <td>구매 날짜</td>

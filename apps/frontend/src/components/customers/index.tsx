@@ -4,6 +4,7 @@ import { FunctionComponent, Suspense, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { CustomerList, ErrorFallback, SuspenseFallback } from "./components";
 import { debounce } from "lodash";
+import { CustomerPurchasesDialog } from "@components/CustomerPurchasesDialog";
 
 
 export const Customers: FunctionComponent = () => {
@@ -13,6 +14,8 @@ export const Customers: FunctionComponent = () => {
     // 네트워크 요청을 최소화하기 위한 디바운스
     const [debouncedName, setDebouncedName] = useState(name);
     const debouncedSetName = useMemo(() => debounce((value: string) => setDebouncedName(value), 300), []);
+
+    const [selected, setSelected] = useState<number | null>(null);
 
     return <>
         <div>
@@ -38,12 +41,13 @@ export const Customers: FunctionComponent = () => {
                     {({ reset }) => (
                         <ErrorBoundary onReset={reset} fallbackRender={ErrorFallback}>
                             <Suspense fallback={<SuspenseFallback />}>
-                                <CustomerList name={debouncedName} sortBy={sortBy} />
+                                <CustomerList name={debouncedName} sortBy={sortBy} onSelect={setSelected} />
                             </Suspense>
                         </ErrorBoundary>
                     )}
                 </QueryErrorResetBoundary>
             </tbody>
         </table>
+        <CustomerPurchasesDialog id={selected} onClose={() => setSelected(null)} />
     </>;
 };

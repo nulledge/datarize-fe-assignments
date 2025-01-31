@@ -1,20 +1,18 @@
 import { useCustomers } from "@apis/useCustomers";
-import { CustomerPurchases } from "@components/CustomerPurchases";
 import { Sort } from "@interfaces/sort";
-import { Fragment, FunctionComponent, useDeferredValue, useState } from "react";
+import { Fragment, FunctionComponent, useDeferredValue } from "react";
 
 type Props = {
     name: string; 
     sortBy: Sort;
+    onSelect: (id: number) => void;
 };
 
-export const CustomerList: FunctionComponent<Props> = ({ name, sortBy }) => {
+export const CustomerList: FunctionComponent<Props> = ({ name, sortBy, onSelect }) => {
     const { data } = useCustomers({
         name: useDeferredValue(name), 
         sortBy: useDeferredValue(sortBy),
     });
-
-    const [selected, setSelected] = useState<number | null>(null);
 
     if (data.length === 0) {
         return (
@@ -28,19 +26,12 @@ export const CustomerList: FunctionComponent<Props> = ({ name, sortBy }) => {
 
     return data.map((customer) => (
         <Fragment key={customer.id}>
-            <tr onClick={() => setSelected(customer.id !== selected ? customer.id : null)}>
+            <tr onClick={() => onSelect(customer.id)}>
                 <td>{customer.id}</td>
                 <td>{customer.name}</td>
                 <td>{customer.count}</td>
                 <td>{customer.totalAmount}</td>
             </tr>
-            {customer.id === selected && (
-                <tr>
-                    <td colSpan={4}>
-                        <CustomerPurchases id={customer.id} />
-                    </td>
-                </tr>
-            )}
         </Fragment>
     ));
 };
