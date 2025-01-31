@@ -27,7 +27,7 @@ export const Purchases: FunctionComponent<Props> = ({ id }) => {
                         <td>{purchase.price / purchase.quantity}</td>
                         <td>{purchase.quantity}</td>
                         <td>
-                            <img src={purchase.imgSrc} />
+                            <img width="100px" height="100px" src={purchase.imgSrc} />
                         </td>
                     </tr>
                 ))}
