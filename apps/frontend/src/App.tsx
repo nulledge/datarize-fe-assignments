@@ -1,10 +1,11 @@
 import { Customers } from '@components/customers'
-import './App.css'
+import { PurchaseFrequency } from '@components/purchaseFrequency'
 
 function App() {
 
   return (
     <>
+      <PurchaseFrequency />
       <Customers />
     </>
   )

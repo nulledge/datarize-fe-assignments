@@ -1,7 +1,7 @@
 import { createQueryKeys, mergeQueryKeys } from "@lukemorales/query-key-factory";
 
 const purchaseFrequency = createQueryKeys('purchase frequency', {
-    'list': ['list'],
+    'list': (from: string, to: string) => ['list', { from, to }],
 });
 
 const customer = createQueryKeys('customer', {
