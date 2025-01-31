@@ -12,6 +12,7 @@
     /* Path alias */
     "baseUrl": "src/",
     "paths": {
+      "@apis/*": ["apis/*"],
       "@components/*": ["components/*"],
       "@interfaces/*": ["interfaces/*"],
       "@/*": ["*"],
