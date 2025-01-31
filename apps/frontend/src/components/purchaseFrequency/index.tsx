@@ -6,7 +6,11 @@ import { ErrorFallback } from "@components/Customers/components";
 import dayjs from "dayjs";
 
 const isValid = (from: string, to: string): boolean => {
-    return Boolean(from) && Boolean(to) && (dayjs(from).isBefore(to, 'date') || dayjs(from).isSame(to, 'date'));
+    return Boolean(from) 
+        && Boolean(to) 
+        && (dayjs(from).isBefore(to, 'date') || dayjs(from).isSame(to, 'date'))
+        && (dayjs(from).isAfter('2024-07-01') || dayjs(from).isSame('2024-07-01', 'date'))
+        && (dayjs(to).isBefore('2024-07-31') || dayjs(to).isSame('2024-07-31', 'date'));
 };
 
 export const PurchaseFrequency: FunctionComponent = () => {
@@ -24,6 +28,7 @@ export const PurchaseFrequency: FunctionComponent = () => {
                     pattern="\d{4}-\d{2}-\d{2}"
                     value={from}
                     onChange={(e) => isValid(e.target.value, to) && setFrom(e.target.value)}
+                    min="2024-07-01"
                     max={to}
                 />
             </div>
@@ -37,6 +42,7 @@ export const PurchaseFrequency: FunctionComponent = () => {
                     value={to}
                     onChange={(e) => isValid(from, e.target.value) && setTo(e.target.value)}
                     min={from}
+                    max="2024-07-31"
                 />
             </div>
         </div>
