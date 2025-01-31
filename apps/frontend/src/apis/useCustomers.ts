@@ -1,7 +1,7 @@
 import { Sort } from "@interfaces/sort";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Customer } from "@interfaces/customer";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 type Request = {
     sortBy: Sort;
@@ -20,8 +20,9 @@ export const useCustomers = (request: Request) => {
             const params = new URLSearchParams(queryKey.at(-1));
             return await axios.get<Response>(`api/customers`, { params })
                 .catch((error) => {
-                    if (error.status === 404)
+                    if (isAxiosError(error) && error.status === 404) {
                         return { data: [] };
+                    }
                     throw error;
                 })
                 .then(({ data }) => data)

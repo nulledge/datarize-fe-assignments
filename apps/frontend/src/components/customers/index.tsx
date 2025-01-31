@@ -1,5 +1,6 @@
 import { useCustomers } from "@apis/useCustomers";
 import { Sort } from "@interfaces/sort";
+import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { FunctionComponent, Suspense, useState, useDeferredValue } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -8,6 +9,14 @@ const CustomerList: FunctionComponent<{ name: string; sort: Sort}> = ({ name, so
         name: name,
         sortBy: sort,
     });
+
+    if (data.length === 0) {
+        return <tr>
+            <td colSpan={4}>
+                검색 결과가 없습니다.
+            </td>
+        </tr>
+    }
 
     return data.map((customer) => (
         <tr key={customer.id}>
@@ -44,13 +53,18 @@ export const Customers: FunctionComponent = () => {
                 </tr>
             </thead>
             <tbody>
-                <ErrorBoundary fallbackRender={() => {
-                    return <tr><td colSpan={4}>fail</td></tr>;
-                }}>
-                    <Suspense fallback={<tr><td colSpan={4}>loading...</td></tr>}>
-                        <CustomerList name={queryName} sort={querySort} />
-                    </Suspense>
-                </ErrorBoundary>
+                <QueryErrorResetBoundary>
+                    {({ reset }) => (
+                        <ErrorBoundary onReset={reset} fallbackRender={({ resetErrorBoundary }) => <>
+                            <tr><td colSpan={4}>알 수 없는 오류가 발생했습니다.</td></tr>
+                            <tr><td colSpan={4}><button onClick={resetErrorBoundary}>재시도</button></td></tr>
+                        </>}>
+                            <Suspense fallback={<tr><td colSpan={4}>조회하는 중...</td></tr>}>
+                                <CustomerList name={queryName} sort={querySort} />
+                            </Suspense>
+                        </ErrorBoundary>
+                    )}
+                </QueryErrorResetBoundary>
             </tbody>
         </table>
     </>;
