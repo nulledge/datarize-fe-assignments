@@ -15,6 +15,7 @@ export const Purchases: FunctionComponent<Props> = ({ id }) => {
                     <td>구매 날짜</td>
                     <td>구매 제품</td>
                     <td>제품 가격</td>
+                    <td>구매 수량</td>
                     <td>제품 사진</td>
                 </tr>
             </thead>
@@ -23,7 +24,8 @@ export const Purchases: FunctionComponent<Props> = ({ id }) => {
                     <tr key={`${purchase.date} ${purchase.product}`}>
                         <td>{purchase.date}</td>
                         <td>{purchase.product}</td>
-                        <td>{purchase.price}</td>
+                        <td>{purchase.price / purchase.quantity}</td>
+                        <td>{purchase.quantity}</td>
                         <td>
                             <img src={purchase.imgSrc} />
                         </td>

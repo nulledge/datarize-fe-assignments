@@ -6,7 +6,7 @@ import { Fragment, FunctionComponent, useDeferredValue, useState } from "react";
 export const CustomerList: FunctionComponent<{ name: string; sortBy: Sort}> = ({ name, sortBy }) => {
     const { data } = useCustomers({
         name: useDeferredValue(name), 
-        sortBy: useDeferredValue(sortBy),
+        sortBy: "desc",
     });
 
     const [selected, setSelected] = useState<number | null>(null);
@@ -21,7 +21,13 @@ export const CustomerList: FunctionComponent<{ name: string; sortBy: Sort}> = ({
         );
     }
 
-    return data.map((customer) => (
+    return data.sort((a, b) => {
+        if (a.totalAmount === b.totalAmount) {
+            const compare = a.id - b.id;
+            return sortBy === 'asc' ? compare : -compare;
+        }
+        return b.totalAmount - a.totalAmount;
+    }).map((customer) => (
         <Fragment key={customer.id}>
             <tr onClick={() => setSelected(customer.id !== selected ? customer.id : null)}>
                 <td>{customer.id}</td>
