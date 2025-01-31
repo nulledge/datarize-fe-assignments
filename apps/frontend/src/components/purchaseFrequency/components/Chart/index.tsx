@@ -1,9 +1,12 @@
 import { usePurchaseFrequency } from "@apis/usePurchaseFrequency";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useDeferredValue } from "react";
 import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
 
 export const Chart: FunctionComponent<{ from: string; to: string; }> = ({ from, to }) => {
-    const { data } = usePurchaseFrequency({ from, to });
+    const { data } = usePurchaseFrequency({
+        from: useDeferredValue(from),
+        to: useDeferredValue(to),
+    });
 
     return (
         <BarChart
